@@ -1,0 +1,207 @@
+
+-------- /nfs/ug/cad/cad2/ece326f/tester/scripts/lab2-03-save.py --------
+
+[
+1. User:
+    1. firstName : string
+    2. lastName : string
+    3. height : float
+    4. age : integer
+, 
+2. Account:
+    1. user : foreign(1)
+    2. type : string
+    3. balance : float
+]
+Listening: TcpListener { addr: 127.0.0.1:7445, fd: 3 }
+Connected to 127.0.0.1:42252
+Request { table_id: 1, command: Insert([Text("Joe"), Text("Harris"), Float(0.0), Integer(32)]) }
+Insert(1, 1)
+Connected to 127.0.0.1:42254
+Request { table_id: 1, command: Dump }
+Dump("1\t1\tJoe\tHarris\t0\t32\n")
+Request { table_id: 1, command: Exit }
+Disconnected.
+Request { table_id: 1, command: Insert([Text("Jeffrey"), Text("Fang"), Float(999.9), Integer(0)]) }
+Insert(2, 1)
+Request { table_id: 2, command: Insert([Foreign(2), Text("Special"), Float(100.0)]) }
+Insert(1, 1)
+Connected to 127.0.0.1:42256
+Request { table_id: 1, command: Dump }
+Dump("1\t1\tJoe\tHarris\t0\t32\n2\t1\tJeffrey\tFang\t999.9\t0\n")
+Request { table_id: 1, command: Exit }
+Disconnected.
+Connected to 127.0.0.1:42258
+Request { table_id: 2, command: Dump }
+Dump("1\t1\t2\tSpecial\t100\n")
+Request { table_id: 1, command: Exit }
+Disconnected.
+Request { table_id: 1, command: Update(1, 1, [Text("Joe"), Text("Harris"), Float(663.1), Integer(32)]) }
+Update(2)
+Connected to 127.0.0.1:42260
+Request { table_id: 1, command: Dump }
+Dump("1\t2\tJoe\tHarris\t663.1\t32\n2\t1\tJeffrey\tFang\t999.9\t0\n")
+Request { table_id: 1, command: Exit }
+Disconnected.
+Request { table_id: 1, command: Update(1, 789987, [Text("Joe"), Text("Harris"), Float(663.1), Integer(32)]) }
+Error(5)
+Request { table_id: 1, command: Update(1, 0, [Text("Joe"), Text("Harris"), Float(663.1), Integer(40)]) }
+Update(3)
+Connected to 127.0.0.1:42262
+Request { table_id: 1, command: Dump }
+Dump("1\t3\tJoe\tHarris\t663.1\t40\n2\t1\tJeffrey\tFang\t999.9\t0\n")
+Request { table_id: 1, command: Exit }
+Disconnected.
+Request { table_id: 2, command: Update(1, 1, [Foreign(2), Text("Special"), Float(200.0)]) }
+Update(2)
+Connected to 127.0.0.1:42264
+Request { table_id: 1, command: Dump }
+Dump("1\t3\tJoe\tHarris\t663.1\t40\n2\t1\tJeffrey\tFang\t999.9\t0\n")
+Request { table_id: 1, command: Exit }
+Disconnected.
+Connected to 127.0.0.1:42266
+Request { table_id: 2, command: Dump }
+Dump("1\t2\t2\tSpecial\t200\n")
+Request { table_id: 1, command: Exit }
+Disconnected.
+Request { table_id: 2, command: Update(1, 2, [Foreign(777888), Text("Special"), Float(200.0)]) }
+Error(9)
+
+-------- /nfs/ug/cad/cad2/ece326f/tester/scripts/lab2-04-delete.py --------
+
+[
+1. User:
+    1. firstName : string
+    2. lastName : string
+    3. height : float
+    4. age : integer
+, 
+2. Account:
+    1. user : foreign(1)
+    2. type : string
+    3. balance : float
+]
+Listening: TcpListener { addr: 127.0.0.1:9156, fd: 3 }
+Connected to 127.0.0.1:51264
+Request { table_id: 1, command: Drop(1) }
+Cascade drop object id 1, table Account
+Drop
+Connected to 127.0.0.1:51266
+Request { table_id: 1, command: Dump }
+Dump("2\t1\tBob\tHington\t178.2\t48\n3\t1\tAlice\tHarris\t163.2\t21\n")
+Request { table_id: 1, command: Exit }
+Disconnected.
+Request { table_id: 1, command: Drop(1) }
+Error(2)
+
+-------- /nfs/ug/cad/cad2/ece326f/tester/scripts/lab2-05-get.py --------
+
+[
+1. User:
+    1. firstName : string
+    2. lastName : string
+    3. height : float
+    4. age : integer
+, 
+2. Account:
+    1. user : foreign(1)
+    2. type : string
+    3. balance : float
+]
+Listening: TcpListener { addr: 127.0.0.1:4691, fd: 3 }
+Connected to 127.0.0.1:34696
+Request { table_id: 1, command: Get(777) }
+Error(2)
+Request { table_id: 1, command: Get(1) }
+Get(1, [Text("James"), Text("Hartley"), Float(180.3), Integer(38)])
+Request { table_id: 1, command: Get(2) }
+Get(1, [Text("Bob"), Text("Hington"), Float(178.2), Integer(48)])
+Request { table_id: 1, command: Get(3) }
+Get(1, [Text("Alice"), Text("Harris"), Float(163.2), Integer(21)])
+Request { table_id: 2, command: Get(1) }
+Get(1, [Foreign(1), Text("Normal"), Float(6500.5)])
+Request { table_id: 2, command: Get(4) }
+Get(1, [Foreign(3), Text("Normal"), Float(73.1)])
+
+-------- /nfs/ug/cad/cad2/ece326f/tester/scripts/lab2-06-filter.py --------
+
+[
+1. User:
+    1. firstName : string
+    2. lastName : string
+    3. height : float
+    4. age : integer
+, 
+2. Account:
+    1. user : foreign(1)
+    2. type : string
+    3. balance : float
+]
+Listening: TcpListener { addr: 127.0.0.1:4979, fd: 3 }
+Connected to 127.0.0.1:39904
+Request { table_id: 1, command: Query(0, 1, Null) }
+Query([1, 2, 3])
+Request { table_id: 1, command: Get(1) }
+Get(1, [Text("James"), Text("Hartley"), Float(180.3), Integer(38)])
+Request { table_id: 1, command: Query(4, 2, Integer(21)) }
+Query([3])
+Request { table_id: 1, command: Get(3) }
+Get(1, [Text("Alice"), Text("Harris"), Float(163.2), Integer(21)])
+Request { table_id: 2, command: Query(0, 3, Foreign(1)) }
+Query([2, 3, 4])
+Request { table_id: 2, command: Get(2) }
+Get(1, [Foreign(3), Text("Normal"), Float(30.2)])
+Request { table_id: 2, command: Query(3, 5, Float(89.1)) }
+Query([1, 3])
+Request { table_id: 2, command: Get(1) }
+Get(1, [Foreign(1), Text("Normal"), Float(6500.5)])
+Request { table_id: 2, command: Query(0, 2, Foreign(1)) }
+Query([1])
+Request { table_id: 2, command: Get(1) }
+Get(1, [Foreign(1), Text("Normal"), Float(6500.5)])
+
+-------- /nfs/ug/cad/cad2/ece326f/tester/scripts/lab2-07-count.py --------
+
+[
+1. User:
+    1. firstName : string
+    2. lastName : string
+    3. height : float
+    4. age : integer
+, 
+2. Account:
+    1. user : foreign(1)
+    2. type : string
+    3. balance : float
+]
+Listening: TcpListener { addr: 127.0.0.1:4249, fd: 3 }
+Connected to 127.0.0.1:33284
+Request { table_id: 2, command: Query(0, 1, Null) }
+Query([1, 2, 3, 4])
+Request { table_id: 2, command: Query(3, 4, Float(210.3)) }
+Query([2, 3, 4])
+Request { table_id: 1, command: Query(0, 3, Foreign(1)) }
+Query([2, 3])
+Request { table_id: 1, command: Query(0, 2, Foreign(999)) }
+Query([])
+Request { table_id: 1, command: Query(0, 5, Foreign(1)) }
+Error(4)
+Request { table_id: 2, command: Query(1, 2, Null) }
+Error(4)
+
+-------- /nfs/ug/cad/cad2/ece326f/tester/scripts/lab2-08-custom.py --------
+
+[
+1. User:
+    1. firstName : string
+    2. lastName : string
+    3. height : float
+    4. age : integer
+, 
+2. Account:
+    1. user : foreign(1)
+    2. type : string
+    3. balance : float
+]
+Listening: TcpListener { addr: 127.0.0.1:2948, fd: 3 }
+Connected to 127.0.0.1:55582
